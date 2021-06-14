@@ -1,6 +1,8 @@
 import Phaser from "../lib/phaser.js";
 
 export default class Game extends Phaser.Scene {
+   /** @type {Phaser.Physics.Arcade.Sprite} */
+   player
   constructor() {
     super("game");
   }
@@ -19,13 +21,13 @@ export default class Game extends Phaser.Scene {
       const y = 150 * i;
 
       {
-        Phaser.Physics.Arcade.Sprite;
+        /** @type {Phaser.Physics.Arcade.Sprite} */
       }
       const platform = platforms.create(x, y, "platform");
       platform.scale = 0.5;
 
       {
-        Phaser.Physics.Arcade.StaticBody;
+        /** @type {Phaser.Physics.Arcade.StaticBody} */
       }
       const body = platform.body;
       body.updateFromGameObject();
