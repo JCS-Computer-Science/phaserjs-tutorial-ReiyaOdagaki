@@ -3,7 +3,7 @@ import Phaser from "../lib/phaser.js";
 export default class Game extends Phaser.Scene {
    /** @type {Phaser.Physics.Arcade.Sprite} */
    player
-   
+
    /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
    cursors
   constructor() {
@@ -14,6 +14,8 @@ export default class Game extends Phaser.Scene {
     this.load.image("background", "assets/bg_layer1.png");
     this.load.image("platform", "assets/ground_grass.png");
     this.load.image("bunny-stand", "assets/bunny1_stand.png");
+    this.cursors = this.input.keyboard.createCursorKeys();
+
   }
 
   create() {
@@ -50,9 +52,10 @@ export default class Game extends Phaser.Scene {
  this.player.body.checkCollision.right = false
 
  this.cameras.main.startFollow(this.player)
+ this.cameras.main.setDeadzone(this.scale.width * 1.5)
 
   }
-  update() {
+  update(t, dt) {
    this.platforms.children.iterate(child => {
        /** @type {Phaser.Physics.Arcade.Sprite} */
        const platform = child
@@ -64,11 +67,42 @@ export default class Game extends Phaser.Scene {
        platform.body.updateFromGameObject()
        }
        })
-      
-    const touchingDown = this.player.body.touching.down;
-
-    if (touchingDown) {
-      this.player.setVelocityY(-300);
-    }
+       const touchingDown = this.player.body.touching.down
+       
+        if (touchingDown)
+        {
+        this.player.setVelocityY(-310)
+        }
+       
+        // left and right input logic
+        if (this.cursors.left.isDown && !touchingDown)
+        {
+        this.player.setVelocityX(-200)
+        }
+        else if (this.cursors.right.isDown && !touchingDown)
+        {
+        this.player.setVelocityX(200)
+        }
+        else
+        {
+        // stop movement if not left or right
+        this.player.setVelocityX(0)
+        }
+        this.horizontalWrap(this.player)
+        }
+        horizontalWrap(sprite)
+         {
+         const halfWidth = sprite.displayWidth * 0.5
+         const gameWidth = this.scale.width
+         if (sprite.x < -halfWidth)
+         {
+         sprite.x = gameWidth + halfWidth
+         }
+         else if (sprite.x > gameWidth + halfWidth)
+         {
+         sprite.x = -halfWidth
+         }
+         }
+    
   }
-}
+
