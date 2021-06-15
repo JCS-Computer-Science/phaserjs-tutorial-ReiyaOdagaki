@@ -19,4 +19,4 @@ export default new Phaser.Game({
     }
   }
 });
-//PAGE 39 PDF / PAGE 36 PHASER
+//PAGE 39, PDF / PAGE 36 PHASER
